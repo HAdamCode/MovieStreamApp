@@ -18,6 +18,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import com.csci448.hadam.moviestreamapp.presentation.viewmodel.IMovieViewModel
+import com.csci448.hadam.moviestreamapp.presentation.viewmodel.MovieViewModelFactory
 import com.csci448.hadam.moviestreamapp.ui.theme.MovieStreamAppTheme
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -31,6 +34,7 @@ import com.google.firebase.storage.ktx.storage
 class MainActivity : ComponentActivity() {
 
     lateinit var storage: FirebaseStorage
+    private lateinit var mMovieViewModel: IMovieViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,8 @@ class MainActivity : ComponentActivity() {
 
         storage = Firebase.storage
         createSignInIntent(signInLauncher)
+        val factory = MovieViewModelFactory(this)
+        mMovieViewModel = ViewModelProvider(this, factory)[factory.getViewModelClass()]
         setContent {
             MainActivityContent()
         }
