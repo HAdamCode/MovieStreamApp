@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "730136800143",
+    "project_id": "moviestreamapp-2b8b7",
+    "storage_bucket": "moviestreamapp-2b8b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730136800143:android:74341feb33343ce765f9fa",
+        "android_client_info": {
+          "package_name": "com.csci448.hadam.moviestreamapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730136800143-uu2k8jgs3eaaloc9d5uajjsm3990ri0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQOD-wwVmqqmNZxlnza3G_iso8xOdAfmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "730136800143-uu2k8jgs3eaaloc9d5uajjsm3990ri0a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

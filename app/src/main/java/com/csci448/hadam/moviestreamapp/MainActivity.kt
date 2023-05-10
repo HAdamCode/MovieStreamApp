@@ -1,46 +1,85 @@
 package com.csci448.hadam.moviestreamapp
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.csci448.hadam.moviestreamapp.ui.theme.MovieStreamAppTheme
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 
 class MainActivity : ComponentActivity() {
+
+    lateinit var storage: FirebaseStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val signInLauncher = registerForActivityResult(
+            FirebaseAuthUIActivityResultContract()
+        ) { res ->
+            onSignInResult(res)
+        }
+
+        storage = Firebase.storage
+        createSignInIntent(signInLauncher)
         setContent {
-            MovieStreamAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            MainActivityContent()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+private fun MainActivityContent(
+) {
+
+    MovieStreamAppTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+
+        }
+    }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MovieStreamAppTheme {
-        Greeting("Android")
+private fun createSignInIntent(signInLauncher: ActivityResultLauncher<Intent>) {
+    val providers = arrayListOf(
+        AuthUI.IdpConfig.EmailBuilder().build()
+    )
+    Log.d("SIGNININTENT", "Before signInIntent")
+    val signInIntent = AuthUI.getInstance()
+        .createSignInIntentBuilder()
+        .setAvailableProviders(providers)
+        .build()
+    Log.d("SIGNININTENT", "After signInIntent")
+    signInLauncher.launch(signInIntent)
+}
+
+private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult): FirebaseUser? {
+    if (result.resultCode == AppCompatActivity.RESULT_OK) {
+        val user = FirebaseAuth.getInstance().currentUser
+        return user
+    } else {
+        return null
     }
 }
