@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MovieStreamApp</string>
+    <string name="list_name">List Screen</string>
 </resources>

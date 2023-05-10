@@ -19,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
+import com.csci448.hadam.moviestreamapp.presentation.navigation.MovieNavHost
+import com.csci448.hadam.moviestreamapp.presentation.navigation.MovieTopBar
 import com.csci448.hadam.moviestreamapp.presentation.viewmodel.IMovieViewModel
 import com.csci448.hadam.moviestreamapp.presentation.viewmodel.MovieViewModelFactory
 import com.csci448.hadam.moviestreamapp.ui.theme.MovieStreamAppTheme
@@ -34,7 +37,7 @@ import com.google.firebase.storage.ktx.storage
 class MainActivity : ComponentActivity() {
 
     lateinit var storage: FirebaseStorage
-    private lateinit var mMovieViewModel: IMovieViewModel
+    private lateinit var movieViewModel: IMovieViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,23 +50,39 @@ class MainActivity : ComponentActivity() {
         storage = Firebase.storage
         createSignInIntent(signInLauncher)
         val factory = MovieViewModelFactory(this)
-        mMovieViewModel = ViewModelProvider(this, factory)[factory.getViewModelClass()]
+        movieViewModel = ViewModelProvider(this, factory)[factory.getViewModelClass()]
         setContent {
-            MainActivityContent()
+            MainActivityContent(movieViewModel = movieViewModel)
         }
     }
 }
 
 @Composable
-private fun MainActivityContent(
-) {
+private fun MainActivityContent(movieViewModel: IMovieViewModel) {
+    val navController = rememberNavController()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     MovieStreamAppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-
+            Scaffold(topBar = {
+                MovieTopBar(
+                    movieViewModel = movieViewModel,
+                    navController = navController,
+                    context = context
+                )
+            }) {
+                MovieNavHost(
+                    Modifier.padding(it),
+                    navController,
+                    movieViewModel,
+                    context,
+                    coroutineScope
+                )
+            }
         }
     }
 }
