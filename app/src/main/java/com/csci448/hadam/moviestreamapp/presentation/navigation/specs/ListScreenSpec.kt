@@ -48,11 +48,11 @@ object ListScreenSpec : IScreenSpec {
         navBackStackEntry: NavBackStackEntry?,
         context: Context
     ) {
-//        IconButton(onClick = { navController.navigate(route = NewVideoScreenSpec.route) }) {
-//            Icon(
-//                imageVector = Icons.Filled.AddCircle,
-//                contentDescription = stringResource(R.string.list_name)
-//            )
-//        }
+        IconButton(onClick = { navController.navigate(route = NewMovieScreenSpec.route) }) {
+            Icon(
+                imageVector = Icons.Filled.AddCircle,
+                contentDescription = stringResource(R.string.list_name)
+            )
+        }
     }
 }

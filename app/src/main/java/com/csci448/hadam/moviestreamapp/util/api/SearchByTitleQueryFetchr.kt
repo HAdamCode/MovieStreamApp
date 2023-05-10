@@ -17,9 +17,9 @@ class SearchByTitleQueryFetchr {
         private const val LOG_TAG = "448.Fetchr"
     }
 
-    fun getVideo(searchText: String?) {
+    fun getMovie(searchText: String?) {
         if (searchText == null) {
-            mAutoComplete.update { null }
+            mSearchByTitle.update { null }
             return
         }
         Log.e(LOG_TAG, searchText)
@@ -39,19 +39,19 @@ class SearchByTitleQueryFetchr {
                 val responseCharacter = response.body()
                 if (responseCharacter == null) {
                     Log.d(LOG_TAG, "response character is null")
-                    mAutoComplete.update { null }
+                    mSearchByTitle.update { null }
                 } else {
                     Log.d(LOG_TAG, responseCharacter.result.size.toString())
-                    mAutoComplete.update { responseCharacter }
+                    mSearchByTitle.update { responseCharacter }
                 }
             }
         })
     }
     private val searchByTitleApiService: SearchByTitleApiService
-    private val mAutoComplete = MutableStateFlow<SearchByTitle?>(null)
+    private val mSearchByTitle = MutableStateFlow<SearchByTitle?>(null)
 
-    val AutoComplete: StateFlow<SearchByTitle?>
-        get() = mAutoComplete.asStateFlow()
+    val searchByTitle: StateFlow<SearchByTitle?>
+        get() = mSearchByTitle.asStateFlow()
 
 
     init {
